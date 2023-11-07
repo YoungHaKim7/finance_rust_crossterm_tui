@@ -4,6 +4,10 @@ use crossterm::event::{read, KeyEvent};
 
 use reqwest::blocking::Client;
 
+// WindowsOS
+// pub const API_KEY: &str = include_str!("..\\key.txt");
+
+// macOS
 pub const API_KEY: &str = include_str!(r"../../key.txt");
 
 struct FinanceClient {
