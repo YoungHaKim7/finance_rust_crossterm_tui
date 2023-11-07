@@ -30,6 +30,10 @@
 
 - https://finnhub.io/
 
+# crossterm 
+
+https://github.com/crossterm-rs/crossterm
+
 # Todo
 
 - stock symblos

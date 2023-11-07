@@ -33,6 +33,9 @@ impl FinanceClient {
 }
 
 fn main() -> io::Result<()> {
-    println!("Hello, world!");
+    let client = FinanceClient {
+        url: "https://finanhub.io/api/v1".to_string(),
+        client: Client::default(),
+    };
     Ok(())
 }
