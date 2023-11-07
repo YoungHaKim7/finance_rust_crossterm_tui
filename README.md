@@ -27,3 +27,5 @@
     - https://www.youtube.com/live/qkd2qNS1YYE?si=4NXiqFR-YqkTSr2k
 
 - code https://github.com/Dhghomon/finance-tool
+
+- https://finnhub.io/
