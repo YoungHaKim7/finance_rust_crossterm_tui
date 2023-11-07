@@ -25,3 +25,5 @@
     - https://www.youtube.com/live/2hvWOjwPRVQ?si=pQXcsjZ4Cvkof_74
   - 러스트로 금융툴 만들기! 제11부 Making a finance tool with Rust! Part 11
     - https://www.youtube.com/live/qkd2qNS1YYE?si=4NXiqFR-YqkTSr2k
+
+- code https://github.com/Dhghomon/finance-tool
