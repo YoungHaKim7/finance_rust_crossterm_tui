@@ -29,3 +29,34 @@
 - code https://github.com/Dhghomon/finance-tool
 
 - https://finnhub.io/
+
+# Todo
+
+- stock symblos
+- company profile 2 - ISIN, company symbol
+- market news
+- company news
+- peers
+- basic sinancials
+- Insider transactions?
+- Insider sentiment
+- Financials as reported
+- SEC filings
+- IPO calendar
+- ESP Surprises
+- Earnings calendar
+- Stock quote
+- Candles?
+- Forex exchanges
+- forex symbols
+- USPTO patents
+- Visa application
+- Senate lobbying
+- USA spending
+- COVID-19 by state
+- Country list
+# Result
+
+```
+
+```

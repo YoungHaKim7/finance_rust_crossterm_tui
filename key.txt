@@ -1,0 +1,1 @@
+Get an API key on https://finnhub.io/ and put it in here to try the tool out
