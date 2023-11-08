@@ -50,14 +50,25 @@ fn main() -> io::Result<()> {
     loop {
         // `read()` blocks until an `Event` is available
         match read()? {
-            Event::FocusGained => println!("FocusGained"),
-            Event::FocusLost => println!("FocusLost"),
-            Event::Key(event) => println!("{:?}", event),
+            // Event::FocusGained => println!("FocusGained"),
+            // Event::FocusLost => println!("FocusLost"),
+            Event::Key(key_event) => {
+                println!("Got a KeyEvent: {key_event:?}");
+            }
             Event::Mouse(event) => println!("{:?}", event),
             // #[cfg(feature = "bracketed-paste")]
-            Event::Paste(data) => println!("{:?}", data),
-            Event::Resize(width, height) => println!("New size {}x{}", width, height),
+            // Event::Paste(data) => println!("{:?}", data),
+            Event::Resize(width, height) => {
+                println!("Window has been resized to {width}, {height}");
+            }
+            _ => println!("test"),
         }
     }
     Ok(())
 }
+
+// tui
+
+// FINANCE TOOL
+// COMPANY DATA || Market cap || This week's news
+// STOCK DATA || One stock data || Weekly data
