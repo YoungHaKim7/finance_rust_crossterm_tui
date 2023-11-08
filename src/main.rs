@@ -1,6 +1,6 @@
 use std::io;
 
-use crossterm::event::{read, KeyEvent, KeyCode, Event};
+use crossterm::event::{read, Event, KeyCode, KeyEvent};
 
 use reqwest::blocking::Client;
 
@@ -41,29 +41,23 @@ impl FinanceClient {
 }
 
 fn main() -> io::Result<()> {
-    let client = FinanceClient {
-        url: "https://finanhub.io/api/v1".to_string(),
-        client: Client::default(),
-        search_string: String::new(),
-    };
+    // let client = FinanceClient {
+    //     url: "https://finanhub.io/api/v1".to_string(),
+    //     client: Client::default(),
+    //     search_string: String::new(),
+    // };
+
     loop {
+        // `read()` blocks until an `Event` is available
         match read()? {
-            Event::Key(key_event) => {
-                let KeyEvent { code, modifiers } = key_event;
-                match (code, modifiers) {
-                    (KeyCode::Char(c), _) => {
-                        client.search_string.push(c);
-                        println!("{}", client.search_string);
-                    },
-                    (_, _) => {}
-                }
-            }
- 
-            Event::FocusGained => todo!(),
-            Event::FocusLost => todo!(),
-            Event::Mouse(_) => todo!(),
-            Event::Paste(_) => todo!(),
-            Event::Resize(_, _) => todo!(),       }
+            Event::FocusGained => println!("FocusGained"),
+            Event::FocusLost => println!("FocusLost"),
+            Event::Key(event) => println!("{:?}", event),
+            Event::Mouse(event) => println!("{:?}", event),
+            // #[cfg(feature = "bracketed-paste")]
+            Event::Paste(data) => println!("{:?}", data),
+            Event::Resize(width, height) => println!("New size {}x{}", width, height),
+        }
     }
     Ok(())
 }
