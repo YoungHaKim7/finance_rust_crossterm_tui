@@ -1,6 +1,6 @@
 use std::io;
 
-use crossterm::event::{read, KeyEvent};
+use crossterm::event::{read, KeyEvent, KeyCode, Event};
 
 use reqwest::blocking::Client;
 
@@ -24,10 +24,13 @@ struct CompanyInfo {
 }
 
 impl FinanceClient {
-    fn get_profile_by_isin(&self, symbol: &str) {
+    fn get_profile_by_isin(&self) {
         let text = self
             .client
-            .get(format!("{}/stock/profile2?symbol={symbol}", self.url))
+            .get(format!(
+                "{}/stock/profile2?symbol={}",
+                self.url, self.search_string
+            ))
             .header("X-Finnhub-Token", API_KEY)
             .send()
             .unwrap()
@@ -43,5 +46,24 @@ fn main() -> io::Result<()> {
         client: Client::default(),
         search_string: String::new(),
     };
+    loop {
+        match read()? {
+            Event::Key(key_event) => {
+                let KeyEvent { code, modifiers } = key_event;
+                match (code, modifiers) {
+                    (KeyCode::Char(c), _) => {
+                        client.search_string.push(c);
+                        println!("{}", client.search_string);
+                    },
+                    (_, _) => {}
+                }
+            }
+ 
+            Event::FocusGained => todo!(),
+            Event::FocusLost => todo!(),
+            Event::Mouse(_) => todo!(),
+            Event::Paste(_) => todo!(),
+            Event::Resize(_, _) => todo!(),       }
+    }
     Ok(())
 }
