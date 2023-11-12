@@ -89,11 +89,11 @@ fn main() -> io::Result<()> {
                     (_, _) => println!("error"),
                 }
             }
-            Event::FocusGained => todo!(),
-            Event::FocusLost => todo!(),
-            Event::Mouse(_) => todo!(),
-            Event::Paste(_) => todo!(),
-            Event::Resize(_, _) => todo!(),
+            Event::FocusGained => {}
+            Event::FocusLost => {}
+            Event::Mouse(_) => {}
+            Event::Paste(_) => {}
+            Event::Resize(_, _) => {}
         }
     }
     Ok(())
