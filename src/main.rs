@@ -24,7 +24,7 @@ struct CompanyInfo {
 }
 
 impl FinanceClient {
-    fn get_profile_by_isin(&self) {
+    fn get_profile_by_symbol(&self) {
         let text = self
             .client
             .get(format!(
@@ -62,11 +62,31 @@ fn main() -> io::Result<()> {
                         client.search_string.push(c);
                         println!("{}", client.search_string);
                     }
-                    // (KeyCode::Esc, _) => {
-                    //     client.search_string.clear;
-                    //     println!("{}", client.search_string);
-                    // }
-                    _ => println!("test"),
+                    (KeyCode::Esc, _) => {
+                        client.search_string.clear();
+                        println!("{}", client.search_string);
+                    }
+
+                    (KeyCode::Backspace, _) => {
+                        client.search_string.pop();
+                        println!("{}", client.search_string);
+                    }
+                    (KeyCode::Enter, _) => {
+                        client.get_profile_by_symbol();
+                    }
+                    (KeyCode::Up, _) => {
+                        println!("Pressed up");
+                    }
+                    (KeyCode::Down, _) => {
+                        println!("Pressed Down");
+                    }
+                    (KeyCode::Left, _) => {
+                        println!("Pressed Left");
+                    }
+                    (KeyCode::Right, _) => {
+                        println!("Pressed Right");
+                    }
+                    (_, _) => println!("error"),
                 }
             }
             Event::FocusGained => todo!(),
