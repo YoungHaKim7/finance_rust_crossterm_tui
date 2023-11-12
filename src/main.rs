@@ -41,27 +41,39 @@ impl FinanceClient {
 }
 
 fn main() -> io::Result<()> {
-    // let client = FinanceClient {
-    //     url: "https://finanhub.io/api/v1".to_string(),
-    //     client: Client::default(),
-    //     search_string: String::new(),
-    // };
+    let mut client = FinanceClient {
+        url: "https://finanhub.io/api/v1".to_string(),
+        client: Client::default(),
+        search_string: String::new(),
+    };
 
     loop {
         // `read()` blocks until an `Event` is available
         match read()? {
-            // Event::FocusGained => println!("FocusGained"),
-            // Event::FocusLost => println!("FocusLost"),
             Event::Key(key_event) => {
-                println!("Got a KeyEvent: {key_event:?}");
+                let KeyEvent {
+                    code,
+                    modifiers,
+                    kind,
+                    state,
+                } = key_event;
+                match (code, modifiers) {
+                    (KeyCode::Char(c), _) => {
+                        client.search_string.push(c);
+                        println!("{}", client.search_string);
+                    }
+                    // (KeyCode::Esc, _) => {
+                    //     client.search_string.clear;
+                    //     println!("{}", client.search_string);
+                    // }
+                    _ => println!("test"),
+                }
             }
-            Event::Mouse(event) => println!("{:?}", event),
-            // #[cfg(feature = "bracketed-paste")]
-            // Event::Paste(data) => println!("{:?}", data),
-            Event::Resize(width, height) => {
-                println!("Window has been resized to {width}, {height}");
-            }
-            _ => println!("test"),
+            Event::FocusGained => todo!(),
+            Event::FocusLost => todo!(),
+            Event::Mouse(_) => todo!(),
+            Event::Paste(_) => todo!(),
+            Event::Resize(_, _) => todo!(),
         }
     }
     Ok(())
