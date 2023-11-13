@@ -5,7 +5,7 @@ use crossterm::event::{read, Event, KeyCode, KeyEvent};
 use reqwest::blocking::Client;
 
 #[cfg(target_os = "windows")]
-pub const API_KEY: &str = include_str!("..\\..\\key.txt");
+pub const API_KEY: &str = include_str!("..\\key.txt");
 
 #[cfg(target_os = "macos")]
 pub const API_KEY: &str = include_str!(r"../../key.txt");
@@ -28,8 +28,10 @@ impl FinanceClient {
         let text = self
             .client
             .get(format!(
-                "{}/stock/profile2?symbol={}",
-                self.url, self.search_string
+                "{}/stock/finacials-reported?symbol={}",
+                // "{}/stock/profile2?symbol={}",
+                self.url,
+                self.search_string
             ))
             .header("X-Finnhub-Token", API_KEY)
             .send()
@@ -40,7 +42,7 @@ impl FinanceClient {
     }
 }
 
-fn main() -> io::Result<()> {
+fn main() -> std::io::Result<()> {
     let mut client = FinanceClient {
         url: "https://finanhub.io/api/v1".to_string(),
         client: Client::default(),
