@@ -3,6 +3,7 @@ use std::io;
 use crossterm::event::{read, Event, KeyCode, KeyEvent};
 
 use reqwest::blocking::Client;
+use serde::{Deserialize, Serialize};
 
 #[cfg(target_os = "windows")]
 pub const API_KEY: &str = include_str!("..\\key.txt");
@@ -19,33 +20,62 @@ struct FinanceClient {
     search_string: String,
 }
 
+/// Serialize = into JSON
+///
+/// Deserialize = into Rust type
+#[derive(Debug, Serialize, Deserialize)]
 struct CompanyInfo {
     country: String,
     currency: String,
-    // marketCapitalization
-    market_capitalization: String,
+    exchange: String,
+    #[serde(rename = "finnhubIndustry")]
+    industry: String,
+    ipo: String, // chrono -> NaiveDate
+    #[serde(rename = "marketCapitalization")]
+    market_capitalization: f64,
+    name: String,
+    phone: String,
+    #[serde(rename = "shareOutstanding")]
+    shares_outstanding: f64,
+    ticker: String,
+    url: String,
 }
+
+// {
+//   "country": "US",
+//   "currency": "USD",
+//   "exchange": "NASDAQ/NMS (GLOBAL MARKET)",
+//   "ipo": "1980-12-12",
+//   "marketCapitalization": 1415993,
+//   "name": "Apple Inc",
+//   "phone": "14089961010",
+//   "shareOutstanding": 4375.47998046875,
+//   "ticker": "AAPL",
+//   "weburl": "https://www.apple.com/",
+//   "logo": "https://static.finnhub.io/logo/87cb30d8-80df-11ea-8951-00000000092a.png",
+//   "finnhubIndustry":"Technology"
+// }
 
 impl FinanceClient {
     fn get_profile_by_symbol(&self) {
         let text = self
             .client
             .get(format!(
-                "{}/stock/finacials-reported?symbol={}",
-                // "{}/stock/profile2?symbol={}",
-                self.url,
-                self.search_string
+                // "{}/stock/finacials-reported?symbol={}",
+                "{}/stock/profile2?symbol={}",
+                self.url, self.search_string
             ))
             .header("X-Finnhub-Token", API_KEY)
             .send()
             .unwrap()
             .text()
             .unwrap();
+        let company_info: CompanyInfo = serde_json::from_str(&text).unwrap();
         println!("Text: {text}");
     }
 }
 
-fn main() -> std::io::Result<()> {
+fn main() -> io::Result<()> {
     let mut client = FinanceClient {
         url: "https://finanhub.io/api/v1".to_string(),
         client: Client::default(),
