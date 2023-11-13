@@ -10,6 +10,9 @@ pub const API_KEY: &str = include_str!("..\\key.txt");
 #[cfg(target_os = "macos")]
 pub const API_KEY: &str = include_str!(r"../../key.txt");
 
+#[cfg(target_os = "linux")]
+pub const API_KEY: &str = include_str!(r"../../key.txt");
+
 struct FinanceClient {
     url: String,
     client: Client,
