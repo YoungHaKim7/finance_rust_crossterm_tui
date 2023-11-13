@@ -41,74 +41,74 @@ impl FinanceClient {
 }
 
 fn main() -> io::Result<()> {
-    // let mut client = FinanceClient {
-    //     url: "https://finanhub.io/api/v1".to_string(),
-    //     client: Client::default(),
-    //     search_string: String::new(),
-    // };
-
-    // loop {
-    //     // `read()` blocks until an `Event` is available
-    //     match read()? {
-    //         Event::Key(key_event) => {
-    //             let KeyEvent {
-    //                 code,
-    //                 modifiers,
-    //                 kind: _,
-    //                 state: _,
-    //             } = key_event;
-    //             match (code, modifiers) {
-    //                 (KeyCode::Char(c), _) => {
-    //                     client.search_string.push(c);
-    //                     println!("{}", client.search_string);
-    //                 }
-    //                 (KeyCode::Esc, _) => {
-    //                     client.search_string.clear();
-    //                     println!("{}", client.search_string);
-    //                 }
-
-    //                 (KeyCode::Backspace, _) => {
-    //                     client.search_string.pop();
-    //                     println!("{}", client.search_string);
-    //                 }
-    //                 (KeyCode::Enter, _) => {
-    //                     client.get_profile_by_symbol();
-    //                 }
-    //                 (KeyCode::Up, _) => {
-    //                     println!("Pressed up");
-    //                 }
-    //                 (KeyCode::Down, _) => {
-    //                     println!("Pressed Down");
-    //                 }
-    //                 (KeyCode::Left, _) => {
-    //                     println!("Pressed Left");
-    //                 }
-    //                 (KeyCode::Right, _) => {
-    //                     println!("Pressed Right");
-    //                 }
-    //                 (_, _) => println!("error"),
-    //             }
-    //         }
-    //         Event::FocusGained => {}
-    //         Event::FocusLost => {}
-    //         Event::Mouse(_) => {}
-    //         Event::Paste(_) => {}
-    //         Event::Resize(_, _) => {}
-    //     }
-    // }
+    let mut client = FinanceClient {
+        url: "https://finanhub.io/api/v1".to_string(),
+        client: Client::default(),
+        search_string: String::new(),
+    };
 
     loop {
         // `read()` blocks until an `Event` is available
         match read()? {
-            Event::FocusGained => println!("FocusGained"),
-            Event::FocusLost => println!("FocusLost"),
-            Event::Key(event) => println!("{:?}", event),
-            Event::Mouse(event) => println!("{:?}", event),
-            // #[cfg(feature = "bracketed-paste")]
-            Event::Paste(data) => println!("{:?}", data),
-            Event::Resize(width, height) => println!("New size {}x{}", width, height),
+            Event::Key(key_event) => {
+                let KeyEvent {
+                    code,
+                    modifiers,
+                    kind: _,
+                    state: _,
+                } = key_event;
+                match (code, modifiers) {
+                    (KeyCode::Char(c), _) => {
+                        client.search_string.push(c);
+                        println!("{}", client.search_string);
+                    }
+                    (KeyCode::Esc, _) => {
+                        client.search_string.clear();
+                        println!("{}", client.search_string);
+                    }
+
+                    (KeyCode::Backspace, _) => {
+                        client.search_string.pop();
+                        println!("{}", client.search_string);
+                    }
+                    (KeyCode::Enter, _) => {
+                        client.get_profile_by_symbol();
+                    }
+                    (KeyCode::Up, _) => {
+                        println!("Pressed up");
+                    }
+                    (KeyCode::Down, _) => {
+                        println!("Pressed Down");
+                    }
+                    (KeyCode::Left, _) => {
+                        println!("Pressed Left");
+                    }
+                    (KeyCode::Right, _) => {
+                        println!("Pressed Right");
+                    }
+                    (_, _) => println!("error"),
+                }
+            }
+            Event::FocusGained => {}
+            Event::FocusLost => {}
+            Event::Mouse(_) => {}
+            Event::Paste(_) => {}
+            Event::Resize(_, _) => {}
         }
     }
+
+    // loop {
+    //     // `read()` blocks until an `Event` is available
+    //     match read()? {
+    //         Event::FocusGained => println!("FocusGained"),
+    //         Event::FocusLost => println!("FocusLost"),
+    //         Event::Key(event) => println!("{:?}", event),
+    //         Event::Mouse(event) => println!("{:?}", event),
+    //         // #[cfg(feature = "bracketed-paste")]
+    //         Event::Paste(data) => println!("{:?}", data),
+    //         Event::Resize(width, height) => println!("New size {}x{}", width, height),
+    //     }
+    // }
 
     Ok(())
 }
