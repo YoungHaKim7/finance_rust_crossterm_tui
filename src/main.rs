@@ -1,6 +1,6 @@
 use std::io;
 
-use crossterm::event::{read, Event, KeyCode, KeyEvent};
+use crossterm::event::{read, Event, KeyCode, KeyEvent, KeyEventKind};
 
 use reqwest::blocking::Client;
 use serde::{Deserialize, Serialize};
@@ -41,21 +41,6 @@ struct CompanyInfo {
     #[serde(rename = "finnhubIndustry")]
     industry: String,
 }
-
-// {
-//   "country": "US",
-//   "currency": "USD",
-//   "exchange": "NASDAQ/NMS (GLOBAL MARKET)",
-//   "ipo": "1980-12-12",
-//   "marketCapitalization": 1415993,
-//   "name": "Apple Inc",
-//   "phone": "14089961010",
-//   "shareOutstanding": 4375.47998046875,
-//   "ticker": "AAPL",
-//   "weburl": "https://www.apple.com/",
-//   "logo": "https://static.finnhub.io/logo/87cb30d8-80df-11ea-8951-00000000092a.png",
-//   "finnhubIndustry":"Technology"
-// }
 
 impl std::fmt::Display for CompanyInfo {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -99,7 +84,6 @@ impl FinanceClient {
         let text = self
             .client
             .get(format!(
-                // "{}/stock/finacials-reported?symbol={}",
                 "{}/stock/profile2?symbol={}",
                 self.url, self.search_string
             ))
@@ -109,7 +93,7 @@ impl FinanceClient {
             .text()
             .unwrap();
         let company_info: CompanyInfo = serde_json::from_str(&text).unwrap();
-        println!("Text: {text}");
+        println!("Text: {}", text);
     }
 }
 
@@ -127,39 +111,39 @@ fn main() -> io::Result<()> {
                 let KeyEvent {
                     code,
                     modifiers,
-                    kind: _,
-                    state: _,
+                    state,
+                    kind,
                 } = key_event;
-                match (code, modifiers) {
-                    (KeyCode::Char(c), _) => {
+                match (code, modifiers, state, kind) {
+                    (KeyCode::Char(c), _, _, KeyEventKind::Press) => {
                         client.search_string.push(c);
                         println!("{}", client.search_string);
                     }
-                    (KeyCode::Esc, _) => {
+                    (KeyCode::Esc, _, _, KeyEventKind::Press) => {
                         client.search_string.clear();
                         println!("{}", client.search_string);
                     }
 
-                    (KeyCode::Backspace, _) => {
+                    (KeyCode::Backspace, _, _, KeyEventKind::Press) => {
                         client.search_string.pop();
                         println!("{}", client.search_string);
                     }
-                    (KeyCode::Enter, _) => {
+                    (KeyCode::Enter, _, _, KeyEventKind::Press) => {
                         client.get_profile_by_symbol();
                     }
-                    (KeyCode::Up, _) => {
+                    (KeyCode::Up, _, _, KeyEventKind::Press) => {
                         println!("Pressed up");
                     }
-                    (KeyCode::Down, _) => {
+                    (KeyCode::Down, _, _, KeyEventKind::Press) => {
                         println!("Pressed Down");
                     }
-                    (KeyCode::Left, _) => {
+                    (KeyCode::Left, _, _, KeyEventKind::Press) => {
                         println!("Pressed Left");
                     }
-                    (KeyCode::Right, _) => {
+                    (KeyCode::Right, _, _, KeyEventKind::Press) => {
                         println!("Pressed Right");
                     }
-                    (_, _) => println!("error"),
+                    (_, _, _, _) => println!("error"),
                 }
             }
             Event::FocusGained => {}
@@ -170,24 +154,5 @@ fn main() -> io::Result<()> {
         }
     }
 
-    // loop {
-    //     // `read()` blocks until an `Event` is available
-    //     match read()? {
-    //         Event::FocusGained => println!("FocusGained"),
-    //         Event::FocusLost => println!("FocusLost"),
-    //         Event::Key(event) => println!("{:?}", event),
-    //         Event::Mouse(event) => println!("{:?}", event),
-    //         // #[cfg(feature = "bracketed-paste")]
-    //         Event::Paste(data) => println!("{:?}", data),
-    //         Event::Resize(width, height) => println!("New size {}x{}", width, height),
-    //     }
-    // }
-
     Ok(())
 }
-
-// tui
-
-// FINANCE TOOL
-// COMPANY DATA || Market cap || This week's news
-// STOCK DATA || One stock data || Weekly data
