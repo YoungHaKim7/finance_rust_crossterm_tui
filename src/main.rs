@@ -6,7 +6,7 @@ use reqwest::blocking::Client;
 use serde::{Deserialize, Serialize};
 
 #[cfg(target_os = "windows")]
-pub const API_KEY: &str = include_str!("..\\key.txt");
+pub const API_KEY: &str = include_str!("..\\..\\key.txt");
 
 #[cfg(target_os = "macos")]
 pub const API_KEY: &str = include_str!(r"../../key.txt");
@@ -28,8 +28,6 @@ struct CompanyInfo {
     country: String,
     currency: String,
     exchange: String,
-    #[serde(rename = "finnhubIndustry")]
-    industry: String,
     ipo: String, // chrono -> NaiveDate
     #[serde(rename = "marketCapitalization")]
     market_capitalization: f64,
@@ -38,7 +36,10 @@ struct CompanyInfo {
     #[serde(rename = "shareOutstanding")]
     shares_outstanding: f64,
     ticker: String,
-    url: String,
+    weburl: String,
+    logo: String,
+    #[serde(rename = "finnhubIndustry")]
+    industry: String,
 }
 
 // {
@@ -55,6 +56,43 @@ struct CompanyInfo {
 //   "logo": "https://static.finnhub.io/logo/87cb30d8-80df-11ea-8951-00000000092a.png",
 //   "finnhubIndustry":"Technology"
 // }
+
+impl std::fmt::Display for CompanyInfo {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let CompanyInfo {
+            country,
+            currency,
+            exchange,
+            ipo,
+            market_capitalization,
+            name,
+            phone,
+            shares_outstanding,
+            ticker,
+            weburl,
+            logo,
+            industry,
+        } = self;
+
+        let company_info = format!(
+            "
+Country: {country},
+Currency: {currency}
+Exchange: {exchange}
+Ipo: {ipo},
+Market_capitalization: {market_capitalization}
+Name: {name}
+Phone: {phone}
+Shares_outstanding: {shares_outstanding}
+Ticker: {ticker}  
+Weburl: {weburl} 
+Logo: {logo}
+Industry: {industry}
+            "
+        );
+        write!(f, "{}", company_info)
+    }
+}
 
 impl FinanceClient {
     fn get_profile_by_symbol(&self) {
